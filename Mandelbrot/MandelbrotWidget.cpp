@@ -1,4 +1,4 @@
-#include "MandelbrotWidget.h"
+#include <MandelbrotWidget.h>
 #include <QPainter>
 #include <QWheelEvent>
 #include <QMouseEvent>
