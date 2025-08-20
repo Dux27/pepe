@@ -3,6 +3,7 @@
 #include <QTimer>
 #include <QMouseEvent>
 #include <iostream>
+#include <random>   
 
 GameOfLifeWidget::GameOfLifeWidget(QWidget *parent)
     : QWidget(parent), running(false) 
@@ -19,6 +20,13 @@ GameOfLifeWidget::GameOfLifeWidget(QWidget *parent)
         }
     });
 
+    flickerTimer = new QTimer(this);
+    connect(flickerTimer, &QTimer::timeout, this, [this]() {
+        int holdDuration = pressTime.msecsTo(QTime::currentTime());
+        flickerSquareSize = (holdDuration / 100) * (width() / lowResW); // Scale to widget size
+        showIndicator = !showIndicator;
+        update();
+    });
     timer->start(frame_dur_ms); 
 }
 
@@ -46,8 +54,6 @@ int GameOfLifeWidget::countLiveNeighbors(int x, int y, int width, int height, co
 void GameOfLifeWidget::renderSimulation() {
     int w = width();
     int h = height();
-    int lowResW = 160;
-    int lowResH = 90;
 
     // Only create image on first frame
     if (firstFrame || image.isNull()) {
@@ -139,7 +145,13 @@ void GameOfLifeWidget::renderSimulation() {
 
 void GameOfLifeWidget::paintEvent(QPaintEvent *) {
     QPainter painter(this);
-    painter.drawImage(0, 0, scaledImage); 
+    painter.drawImage(0, 0, scaledImage);
+    
+    if (middleButtonPressed && showIndicator) {
+        int leftCornerX = gridX * width() / lowResW - flickerSquareSize/2;
+        int leftCornerY = gridY * height() / lowResH - flickerSquareSize/2;
+        painter.fillRect(leftCornerX, leftCornerY, flickerSquareSize, flickerSquareSize, Qt::darkGray);
+    }
 }
 
 void GameOfLifeWidget::resizeEvent(QResizeEvent *event) {
@@ -162,16 +174,68 @@ void GameOfLifeWidget::keyPressEvent(QKeyEvent *event) {
 }
 
 void GameOfLifeWidget::mousePressEvent(QMouseEvent *event) {
+    int clickX = event->pos().x();
+    int clickY = event->pos().y();
+        
+    // Convert to low-res coordinates
+    gridX = (clickX * lowResW) / width();
+    gridY = (clickY * lowResH) / height();
+
     if (event->button() == Qt::LeftButton){
-        int clickX = event->pos().x();
-        int clickY = event->pos().y();
-        
-        // Convert to low-res coordinates
-        int gridX = (clickX * 160) / width();
-        int gridY = (clickY * 90) / height();
-        
         image.setPixel(gridX, gridY, alive);
+    }
+    else if (event->button() == Qt::RightButton){
+        image.setPixel(gridX, gridY, alive);
+        if(gridX + 1 >= 0 && gridX + 1 < lowResW && gridY + 1 >= 0 && gridY + 1 < lowResH)
+            image.setPixel(gridX + 1, gridY + 1, alive);
+        if(gridX - 1 >= 0 && gridX - 1 < lowResW && gridY + 2 >= 0 && gridY + 2 < lowResH)
+            image.setPixel(gridX - 1, gridY + 2, alive);
+        if(gridY + 2 >= 0 && gridY + 2 < lowResH)
+            image.setPixel(gridX, gridY + 2, alive);
+        if(gridX + 1 >= 0 && gridX + 1 < lowResW && gridY + 2 >= 0 && gridY + 2 < lowResH)
+            image.setPixel(gridX + 1, gridY + 2, alive);
+    }
+    else if (event->button() == Qt::MiddleButton){
+        pressTime = QTime::currentTime();
+        middleButtonPressed = true;
+        showIndicator = true;
+        flickerTimer->start(100);
+    }
+
+    scaledImage = image.scaled(width(), height(), Qt::KeepAspectRatio, Qt::FastTransformation);
+    update(); 
+}
+
+void GameOfLifeWidget::mouseReleaseEvent(QMouseEvent *event) {
+    if (event->button() == Qt::MiddleButton && middleButtonPressed){
+        int holdDuration = pressTime.msecsTo(QTime::currentTime());
+        std::cout << "Middle button held for: " << holdDuration << " ms" << std::endl;
+        
+        int fieldSize = holdDuration / 100;
+
+        for(int dx = -fieldSize/2; dx < fieldSize/2; dx++){
+            for(int dy = -fieldSize/2; dy < fieldSize/2; dy++){
+                int rx = gridX + dx;
+                int ry = gridY + dy;
+                
+                // Some new school shit
+                std::random_device rd;                      // seed for randomness
+                std::mt19937 gen(rd());                     // random number engine
+                std::uniform_int_distribution<> dist(0, 1); // 0 or 1
+
+                if(rx >= 0 && rx < lowResW && ry >= 0 && ry < lowResH) {
+                    bool randVal = dist(gen);
+                    image.setPixel(rx, ry, randVal ? alive : dead);
+                }
+            }
+        }
+
         scaledImage = image.scaled(width(), height(), Qt::KeepAspectRatio, Qt::FastTransformation);
         update(); 
+
+        middleButtonPressed = false;
+        flickerTimer->stop();
+        flickerSquareSize = 0;
+        showIndicator = false;
     }
 }
