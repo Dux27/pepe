@@ -1,0 +1,5 @@
+/home/dux/inf/pepe/GameOfLife/build/CMakeFiles/GameOfLife.dir
+/home/dux/inf/pepe/GameOfLife/build/CMakeFiles/edit_cache.dir
+/home/dux/inf/pepe/GameOfLife/build/CMakeFiles/rebuild_cache.dir
+/home/dux/inf/pepe/GameOfLife/build/CMakeFiles/GameOfLife_autogen_timestamp_deps.dir
+/home/dux/inf/pepe/GameOfLife/build/CMakeFiles/GameOfLife_autogen.dir
