@@ -8,6 +8,15 @@
 GameOfLifeWidget::GameOfLifeWidget(QWidget *parent)
     : QWidget(parent), running(false) 
 {
+    setWindowTitle("Conway's Game of Life");
+
+    std::cout << "+==================== CONWAY'S GAME OF LIFE - CONTROLS =====================+" << std::endl;
+    std::cout << "| SPACEBAR       - Start/Stop simulation                                    |" << std::endl;
+    std::cout << "| LEFT CLICK     - Place single alive cell                                  |" << std::endl;
+    std::cout << "| RIGHT CLICK    - Place glider                                             |" << std::endl;           
+    std::cout << "| MIDDLE CLICK   - Hold to create random field (longer hold = bigger field) |" << std::endl;
+    std::cout << "+===========================================================================+" << std::endl;
+
     setFocusPolicy(Qt::StrongFocus);
     timer = new QTimer(this);   // 'this' is passed as the parent, so the timer will be destroyed automatically when the widget is destroyed
 
