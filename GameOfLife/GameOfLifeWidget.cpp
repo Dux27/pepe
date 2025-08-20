@@ -15,6 +15,7 @@ GameOfLifeWidget::GameOfLifeWidget(QWidget *parent)
     std::cout << "| LEFT CLICK     - Place single alive cell                                  |" << std::endl;
     std::cout << "| RIGHT CLICK    - Place glider                                             |" << std::endl;           
     std::cout << "| MIDDLE CLICK   - Hold to create random field (longer hold = bigger field) |" << std::endl;
+    std::cout << "| Ctrl + R       - Restart Simulation                                       |" << std::endl;
     std::cout << "+===========================================================================+" << std::endl;
 
     setFocusPolicy(Qt::StrongFocus);
@@ -177,9 +178,13 @@ void GameOfLifeWidget::keyPressEvent(QKeyEvent *event) {
         if (running && !timer->isActive()) {
             timer->start(frame_dur_ms);
         }
+        std::string msg = running ? "START" : "STOP"; 
+        std::cout<<msg<<std::endl;
     }
-    std::string msg = running ? "START" : "STOP"; 
-    std::cout<<msg<<std::endl;
+    else if (event->key() == Qt::Key_R && event->modifiers() & Qt::ControlModifier) {
+        firstFrame = true;
+        std::cout << "Restarting simulation" << std::endl;
+    }
 }
 
 void GameOfLifeWidget::mousePressEvent(QMouseEvent *event) {
