@@ -1,8 +1,11 @@
 #include <QApplication>
+#include <QIcon>
 #include "GameOfLifeWidget.h"
 
 int main(int argc, char* argv[]){
     QApplication app(argc, argv);
+
+     app.setWindowIcon(QIcon("res/glider.png")); // Using resource file
 
     GameOfLifeWidget widget;
     widget.resize(1280, 720);
