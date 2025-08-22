@@ -60,6 +60,13 @@
         "thread": "cpp",
         "cinttypes": "cpp",
         "typeinfo": "cpp",
-        "qmouseevent": "cpp"
+        "qmouseevent": "cpp",
+        "qwheelevent": "cpp",
+        "complex": "cpp",
+        "condition_variable": "cpp",
+        "list": "cpp",
+        "mutex": "cpp",
+        "variant": "cpp",
+        "qpainter": "cpp"
     }
 }

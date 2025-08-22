@@ -19,8 +19,8 @@ GameOfLifeWidget::GameOfLifeWidget(QWidget *parent)
     std::cout << "+===========================================================================+" << std::endl;
 
     setFocusPolicy(Qt::StrongFocus);
+    
     timer = new QTimer(this);   // 'this' is passed as the parent, so the timer will be destroyed automatically when the widget is destroyed
-
     connect(timer, &QTimer::timeout, this, [this]() {
         if (running) {
             renderSimulation();

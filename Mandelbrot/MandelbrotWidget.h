@@ -8,7 +8,9 @@ class MandelbrotWidget : public QWidget {
     Q_OBJECT    // Macro required for all Qt classes that use signals/slots
 
     public:
-        // Constructor. Called when widget is created. Explicit means it cannot be implicitly converted.
+        // Constructor. Called when widget is created. Explicit means data type can be converted only explicitly, not implicitly.
+        // This prevents accidental conversions that could lead to bugs.
+        // The parent parameter allows this widget to be a child of another widget, which is useful
         explicit MandelbrotWidget(QWidget *parent = nullptr);   // Initializes the widget with a parent widget. If no parent is given, it defaults to nullptr.
         // Parent is optional, allowing nesting of widgets.
 

@@ -5,7 +5,7 @@
 int main(int argc, char* argv[]){
     QApplication app(argc, argv);
 
-     app.setWindowIcon(QIcon("res/glider.png")); // Using resource file
+    app.setWindowIcon(QIcon("/home/dux/inf/pepe/GameOfLife/res/glider.png")); 
 
     GameOfLifeWidget widget;
     widget.resize(1280, 720);
