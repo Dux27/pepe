@@ -7,6 +7,7 @@
 #include <functional>
 #include <cstdlib>
 #include <algorithm> // added for std::clamp
+#include <random>   
 
 NBodyGravitation::NBodyGravitation(QWidget *parent): QWidget(parent) , running(true)
 {
@@ -14,7 +15,7 @@ NBodyGravitation::NBodyGravitation(QWidget *parent): QWidget(parent) , running(t
 
     QVector2D mercuryRelativeToCenter{100.0f, 400.0f};
     mercury.pos = posRelativeToCenter(mercuryRelativeToCenter);
-    mercury.vel = QVector2D(-8.00f, 0.0f);
+    mercury.vel = QVector2D(-22.00f, 0.0f);
     mercury.acc = QVector2D(0.0f, 0.0f);
 
     QVector2D venusRelativeToCenter{0.0f, 0.0f};
@@ -78,7 +79,7 @@ void NBodyGravitation::renderSimulation()
     for(const Body& b : bodies)
     {   
         float radius = std::pow(b.mass, 1.0/3.0) * radiusMassRatio;
-        radius /= 35; // Scaling for simulation purposes
+        radius /= radiusScaling; // Scaling for simulation purposes
         // std::cout << b.name << " radius: " << radius << std::endl;
         renderCircle(b.pos, radius, qRgb(255, 255, 255));
 
@@ -211,9 +212,9 @@ void NBodyGravitation::mousePressEvent(QMouseEvent *event)
         std::unique_ptr<Body> genBody = std::make_unique<Body>();    // alternative to "std::unique_ptr<Body>" is "auto"
 
         genBody->name = name;
-        genBody->mass = 2.0f;
+        genBody->mass = genBodyMass;
         genBody->pos  = QVector2D(x, y);
-        genBody->vel  = QVector2D(25.0f, 0.0f);
+        genBody->vel  = genBodyVel;
         genBody->acc  = QVector2D(0.0f, 0.0f);
 
         // push a *copy* of the Body into the simple vector
