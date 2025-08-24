@@ -19,15 +19,16 @@ class NBodyGravitation : public QWidget
 
     private:
         QTimer *timer;
-        const int TICK_MS = 5;
+        const int TICK_MS = 50;
         bool running;
 
         QImage lowResImage;
         QImage scaledImage;
-        const int lowResW = 1920*3;
-        const int lowResH = 1080*3;
+        const int lowResW = 1920;
+        const int lowResH = 1080;
 
-        int orbitColor = qRgb(255, 0, 0); 
+        float accCap = 2.0f;
+        int orbitColor = qRgb(0, 255, 0); 
         int bodyIndex = 1;
 
         void renderSimulation();
@@ -46,9 +47,10 @@ class NBodyGravitation : public QWidget
         QVector2D centerOfMass();
         QVector2D gravitationalForce(Body body);
 
-        Body mercury = {"Mercury", 828.5f}; // 328.5f
-        Body venus = {"Venus", 160028.5f};    // 4867.0f
-        std::vector<std::reference_wrapper<Body>> bodies = {mercury, venus};
+        // *1e23
+        Body mercury = {"Mercury", 3.285f}; // 328.5f
+        Body venus = {"Venus", 3500.67f};    // 4867.0f
+        std::vector<std::reference_wrapper<Body>> bodies = {venus};
         std::vector<std::unique_ptr<Body>> generatedBodies;
 
         float earthGravity;

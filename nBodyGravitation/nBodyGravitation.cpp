@@ -6,12 +6,13 @@
 #include <math.h>
 #include <functional>
 #include <cstdlib>
+#include <algorithm> // added for std::clamp
 
 NBodyGravitation::NBodyGravitation(QWidget *parent): QWidget(parent) , running(true)
 {
     earthGravity = 9.81 / (1000 / TICK_MS); // Considering that one pixel is 1 m
 
-    QVector2D mercuryRelativeToCenter{300.0f, 900.0f};
+    QVector2D mercuryRelativeToCenter{100.0f, 400.0f};
     mercury.pos = posRelativeToCenter(mercuryRelativeToCenter);
     mercury.vel = QVector2D(-8.00f, 0.0f);
     mercury.acc = QVector2D(0.0f, 0.0f);
@@ -28,8 +29,12 @@ NBodyGravitation::NBodyGravitation(QWidget *parent): QWidget(parent) , running(t
         {
             for(Body& b : bodies)
             {
-                QVector2D force = gravitationalForce(b) * 1e10;
-                b.acc = force / b.mass;
+                QVector2D force = gravitationalForce(b) * 1e13;
+                QVector2D acc = force / b.mass;
+
+                acc.setX(std::clamp(acc.x(), -accCap, accCap));
+                acc.setY(std::clamp(acc.y(), -accCap, accCap));
+                b.acc = acc;
 
                 b.pos += b.vel;
                 b.vel += b.acc;
@@ -73,7 +78,7 @@ void NBodyGravitation::renderSimulation()
     for(const Body& b : bodies)
     {   
         float radius = std::pow(b.mass, 1.0/3.0) * radiusMassRatio;
-        radius /= 300; // Scaling for simulation purposes
+        radius /= 35; // Scaling for simulation purposes
         // std::cout << b.name << " radius: " << radius << std::endl;
         renderCircle(b.pos, radius, qRgb(255, 255, 255));
 
@@ -201,15 +206,20 @@ void NBodyGravitation::mousePressEvent(QMouseEvent *event)
         float x = static_cast<float>(event->pos().x()) * lowResW / std::max(1, width());
         float y = static_cast<float>(event->pos().y()) * lowResH / std::max(1, height());
 
-        auto genBody = std::make_unique<Body>();
+        // allocate a new Body dynamically on the heap using unique_ptr 
+        // (so it has a lifetime beyond this function call)
+        std::unique_ptr<Body> genBody = std::make_unique<Body>();    // alternative to "std::unique_ptr<Body>" is "auto"
+
         genBody->name = name;
-        genBody->mass = 8000.0f;
+        genBody->mass = 2.0f;
         genBody->pos  = QVector2D(x, y);
-        genBody->vel  = QVector2D(0.0f, 0.0f);
+        genBody->vel  = QVector2D(25.0f, 0.0f);
         genBody->acc  = QVector2D(0.0f, 0.0f);
 
-        bodies.push_back(*genBody);
-        generatedBodies.push_back(std::move(genBody));
+        // push a *copy* of the Body into the simple vector
+        bodies.push_back(*genBody);                      
+        // transfer ownership of the dynamically allocated Body into the unique_ptr vector 
+        generatedBodies.push_back(std::move(genBody));  
 
         bodyIndex ++;
     }
