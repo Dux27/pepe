@@ -3,6 +3,7 @@
 #include <QWidget>
 #include <QImage>
 #include <QTime>
+#include <random>
 
 class GameOfLifeWidget : public QWidget {
     Q_OBJECT

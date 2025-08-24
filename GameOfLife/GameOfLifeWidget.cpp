@@ -19,8 +19,8 @@ GameOfLifeWidget::GameOfLifeWidget(QWidget *parent)
     std::cout << "+===========================================================================+" << std::endl;
 
     setFocusPolicy(Qt::StrongFocus);
-    
     timer = new QTimer(this);   // 'this' is passed as the parent, so the timer will be destroyed automatically when the widget is destroyed
+
     connect(timer, &QTimer::timeout, this, [this]() {
         if (running) {
             renderSimulation();
@@ -29,6 +29,7 @@ GameOfLifeWidget::GameOfLifeWidget(QWidget *parent)
             timer->stop(); 
         }
     });
+    timer->start(frame_dur_ms); 
 
     flickerTimer = new QTimer(this);
     connect(flickerTimer, &QTimer::timeout, this, [this]() {
@@ -37,7 +38,6 @@ GameOfLifeWidget::GameOfLifeWidget(QWidget *parent)
         showIndicator = !showIndicator;
         update();
     });
-    timer->start(frame_dur_ms); 
 }
 
 int GameOfLifeWidget::countLiveNeighbors(int x, int y, int width, int height, const QImage& pixelGrid) {

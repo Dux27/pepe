@@ -67,6 +67,7 @@
         "list": "cpp",
         "mutex": "cpp",
         "variant": "cpp",
-        "qpainter": "cpp"
+        "qpainter": "cpp",
+        "typeindex": "cpp"
     }
 }
