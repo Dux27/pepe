@@ -1,9 +1,0 @@
-# ninja log v5
-0	225	1753398177692881022	Mandelbrot_autogen/timestamp	414aebea14a85c7e
-0	225	1753398177692881022	Mandelbrot_autogen/mocs_compilation.cpp	414aebea14a85c7e
-0	225	1753398177692881022	/home/dux/inf/pepe/Mandelbrot/build/Mandelbrot_autogen/timestamp	414aebea14a85c7e
-0	225	1753398177692881022	/home/dux/inf/pepe/Mandelbrot/build/Mandelbrot_autogen/mocs_compilation.cpp	414aebea14a85c7e
-225	1521	1753398179000797042	CMakeFiles/Mandelbrot.dir/Mandelbrot_autogen/mocs_compilation.cpp.o	eff5345d87f54d9b
-225	1646	1753398179125789104	CMakeFiles/Mandelbrot.dir/main.cpp.o	fde9e6d89877e103
-225	1843	1753398179321776657	CMakeFiles/Mandelbrot.dir/MandelbrotWidget.cpp.o	994aa46d418fbf9c
-1843	2338	1753398179812745476	Mandelbrot	cf1868e1cefe9ccb

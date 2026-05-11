@@ -1,5 +1,0 @@
-/home/dux/inf/pepe/Mandelbrot/build/CMakeFiles/Mandelbrot.dir
-/home/dux/inf/pepe/Mandelbrot/build/CMakeFiles/edit_cache.dir
-/home/dux/inf/pepe/Mandelbrot/build/CMakeFiles/rebuild_cache.dir
-/home/dux/inf/pepe/Mandelbrot/build/CMakeFiles/Mandelbrot_autogen_timestamp_deps.dir
-/home/dux/inf/pepe/Mandelbrot/build/CMakeFiles/Mandelbrot_autogen.dir

@@ -1,5 +1,0 @@
-/home/dux/inf/pepe/nBodyGravitation/build/CMakeFiles/nBodyGravitation.dir
-/home/dux/inf/pepe/nBodyGravitation/build/CMakeFiles/edit_cache.dir
-/home/dux/inf/pepe/nBodyGravitation/build/CMakeFiles/rebuild_cache.dir
-/home/dux/inf/pepe/nBodyGravitation/build/CMakeFiles/nBodyGravitation_autogen_timestamp_deps.dir
-/home/dux/inf/pepe/nBodyGravitation/build/CMakeFiles/nBodyGravitation_autogen.dir
