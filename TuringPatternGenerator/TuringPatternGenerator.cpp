@@ -15,4 +15,6 @@ TuringPatternGenerator::TuringPatternGenerator(QWidget *parent)
         else
             timer->stop();
     });
+    timer->start(frame_dur_ms)
+    
 }

@@ -19,4 +19,5 @@ class TuringPatternGenerator : public QWidget
         // QImage image;
 
         bool running;
+        int frame_dur_ms;
 };
