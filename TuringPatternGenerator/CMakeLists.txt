@@ -11,7 +11,7 @@ find_package(Qt6 REQUIRED COMPONENTS Widgets) # Find the Qt6 Widgets module
 add_executable(TuringPatternGenerator
     main.cpp
     TuringPatternGenerator.cpp
-    TuringPatternGenerator.h
+    TuringPatternGenerator.hpp
 )
 
 target_link_libraries(TuringPatternGenerator PRIVATE Qt6::Widgets) # Link the Qt6 Widgets library to the executable
