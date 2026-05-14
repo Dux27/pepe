@@ -11,10 +11,29 @@ TuringPatternGenerator::TuringPatternGenerator(QWidget *parent)
         if (running)
         {
             update();
+            renderSimulation();
         }
         else
             timer->stop();
     });
-    timer->start(frame_dur_ms)
+    timer->start(frame_dur_ms);
+}
+
+void TuringPatternGenerator::renderSimulation()
+{
+    int w = width();
+    int h = height();
     
+    if (first_frame)
+    {
+        image = QImage();
+        image.fill(red);
+        first_frame = false;
+    }
+}
+
+void TuringPatternGenerator::paintEvent(QPaintEvent *event)
+{
+    QPainter painter(this);
+    painter.drawImage(0, 0, image);
 }

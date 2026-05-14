@@ -7,6 +7,7 @@ int main(int argc, char* argv[])
 
     TuringPatternGenerator widget;
     widget.show();
+    widget.resize(1280, 720);
 
     return app.exec();
 }

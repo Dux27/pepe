@@ -3,6 +3,7 @@
 #include <QWidget>
 #include <QImage>
 #include <QTimer>
+#include <QPainter>
 
 class TuringPatternGenerator : public QWidget
 {
@@ -12,12 +13,21 @@ class TuringPatternGenerator : public QWidget
         explicit TuringPatternGenerator(QWidget *parent=nullptr);
 
     protected:
-        // void paintEvent(QPaintEvent *event) override;
+        void paintEvent(QPaintEvent *event) override;
 
     private:
         QTimer *timer;
-        // QImage image;
+        QImage image;
 
-        bool running;
-        int frame_dur_ms;
+        int width = 1280;
+        int height = 720;
+        
+        bool running = true;
+        int frame_dur_ms = 100;;
+
+        bool first_frame = true;
+        int red = qRgb(255, 0, 0);
+
+        void renderSimulation();
+
 };
