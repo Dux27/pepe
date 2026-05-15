@@ -5,6 +5,7 @@
 #include <QTimer>
 #include <QPainter>
 
+
 class TuringPatternGenerator : public QWidget
 {
     Q_OBJECT
@@ -19,15 +20,10 @@ class TuringPatternGenerator : public QWidget
         QTimer *timer;
         QImage image;
 
-        int width = 1280;
-        int height = 720;
-        
-        bool running = true;
-        int frame_dur_ms = 100;;
+        bool running;
+        int frame_dur_ms = 100;
 
-        bool first_frame = true;
-        int red = qRgb(255, 0, 0);
+        int background_rgb = qRgb(255, 0, 255);
 
         void renderSimulation();
-
 };

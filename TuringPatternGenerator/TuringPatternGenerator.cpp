@@ -1,7 +1,9 @@
 #include "TuringPatternGenerator.hpp"
+#include <iostream>
+
 
 TuringPatternGenerator::TuringPatternGenerator(QWidget *parent)
-    : QWidget(parent)
+    : QWidget(parent), running(true)
 {
     setWindowTitle("Turing Pattern Generator");
     setFocusPolicy(Qt::StrongFocus);
@@ -21,14 +23,11 @@ TuringPatternGenerator::TuringPatternGenerator(QWidget *parent)
 
 void TuringPatternGenerator::renderSimulation()
 {
-    int w = width();
-    int h = height();
-    
-    if (first_frame)
+    if (image.isNull())
     {
-        image = QImage();
-        image.fill(red);
-        first_frame = false;
+        image = QImage(width(), height(), QImage::Format_RGB32);
+        image.fill(background_rgb);
+        return;
     }
 }
 
