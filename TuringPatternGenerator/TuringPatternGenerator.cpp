@@ -1,7 +1,6 @@
 #include "TuringPatternGenerator.hpp"
 #include <iostream>
 
-
 TuringPatternGenerator::TuringPatternGenerator(QWidget *parent)
     : QWidget(parent), running(true)
 {
@@ -12,8 +11,8 @@ TuringPatternGenerator::TuringPatternGenerator(QWidget *parent)
     connect(timer, &QTimer::timeout, this, [this]() -> void {
         if (running)
         {
-            update();
             renderSimulation();
+            update();
         }
         else
             timer->stop();
@@ -25,10 +24,13 @@ void TuringPatternGenerator::renderSimulation()
 {
     if (image.isNull())
     {
-        image = QImage(width(), height(), QImage::Format_RGB32);
+        image = QImage(sim_width, sim_height, QImage::Format_RGB32);
         image.fill(background_rgb);
         return;
     }
+
+    image = QImage(width() * 0.8, height(), QImage::Format_RGB32);
+    image.fill(background_rgb);
 }
 
 void TuringPatternGenerator::paintEvent(QPaintEvent *event)

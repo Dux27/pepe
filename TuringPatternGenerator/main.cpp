@@ -6,8 +6,7 @@ int main(int argc, char* argv[])
     QApplication app(argc, argv);
 
     TuringPatternGenerator widget;
-    widget.resize(1280, 720);
-    widget.show();
+    widget.showMaximized();
 
     return app.exec();
 }
