@@ -1,8 +1,9 @@
 #include "TuringPatternGenerator.hpp"
 #include <iostream>
 
+
 TuringPatternGenerator::TuringPatternGenerator(QWidget *parent)
-    : QWidget(parent), running(true)
+    : QWidget(parent), running(false)
 {
     setWindowTitle("Turing Pattern Generator");
     setFocusPolicy(Qt::StrongFocus);
@@ -21,8 +22,10 @@ TuringPatternGenerator::TuringPatternGenerator(QWidget *parent)
             sim_canvas->renderSimulation();
             update();
         }
-        else
-            timer->stop();
     });
     timer->start(frame_dur_ms);
+
+    connect(ui_panel, &UIPanel::run_simulation_toggled, this, [this](bool is_running){ 
+        this->running = is_running; 
+    });
 }

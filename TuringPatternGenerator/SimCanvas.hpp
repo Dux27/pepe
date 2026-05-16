@@ -4,6 +4,7 @@
 #include <QImage>
 #include <QPainter>
 
+
 class SimCanvas : public QWidget
 {
     Q_OBJECT
@@ -17,7 +18,9 @@ class SimCanvas : public QWidget
     public:
         QImage image;
 
-        int background_rgb = qRgb(255, 0, 255);
+        int background_1_rgb = qRgb(255, 0, 255);
+        int background_2_rgb = qRgb(255, 255, 0);
+        bool odd_frame = true;
 
         void renderSimulation();
 };

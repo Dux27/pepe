@@ -28,7 +28,4 @@ class TuringPatternGenerator : public QWidget
 
         bool running;
         int frame_dur_ms = 100;
-
-        int init_window_width = 1920;
-        int init_window_height = 1080;
 };
