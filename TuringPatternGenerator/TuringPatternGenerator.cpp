@@ -16,11 +16,14 @@ TuringPatternGenerator::TuringPatternGenerator(QWidget *parent)
     main_layout->addWidget(ui_panel, 10 - (10 * Config::sim_window_ratio));
     this->setLayout(main_layout);
 
+    sim_canvas->renderSimulation();
+    
     timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, [this]() -> void {
         if (running)
         {
             sim_canvas->renderSimulation();
+            sim_canvas->updateSimulation();
             update();
         }
     });

@@ -7,6 +7,13 @@
 #include <QPainter>
 
 
+struct Direction
+{
+    int dx;
+    int dy;
+};
+
+
 class SimCanvas : public QWidget
 {
     Q_OBJECT
@@ -27,7 +34,10 @@ class SimCanvas : public QWidget
         int h = Config::window_height;
         int w = Config::window_width * Config::sim_window_ratio;
         std::vector<std::vector<float>> curr_grid;
+        std::vector<std::vector<float>> next_grid;
 
         void renderSimulation();
+        void updateSimulation();
+
         void generateCircle(std::vector<std::vector<float>> &grid, int x, int y, int size);
 };

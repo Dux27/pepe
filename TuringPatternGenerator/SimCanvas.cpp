@@ -1,4 +1,6 @@
 #include "SimCanvas.hpp"
+#include <cstdlib>
+#include <ctime>
 
 
 SimCanvas::SimCanvas(QWidget *parent)
@@ -8,7 +10,11 @@ SimCanvas::SimCanvas(QWidget *parent)
     image.fill(background_rgb);
 
     curr_grid.assign(h, std::vector<float>(w, 0.0f));
-    generateCircle(curr_grid, w / 2, h / 2, 20);
+    next_grid.assign(h, std::vector<float>(w, 0.0f));
+
+    srand(static_cast<unsigned int>(time(nullptr)));
+
+    generateCircle(curr_grid, w / 2, h / 2, 100);
 }
 
 void SimCanvas::renderSimulation()
@@ -22,7 +28,7 @@ void SimCanvas::renderSimulation()
     image.fill(background_rgb);
 
     // Get the raw pointer to the first memory cell of the image data.
-    // Interpret the pointer as 32-bit in type (QRgb*) rather than a 1-byte type (uchar*)
+    // Interpret the pointer as 33-bit in type (QRgb*) rather than a 1-byte type (uchar*)
     // This means whenever we increment the index by 1, the compiler automatically jumps forward by 4 bytes (one full pixel) in memory.
     QRgb *pixel_data = reinterpret_cast<QRgb *>(image.bits());
 
@@ -39,6 +45,35 @@ void SimCanvas::renderSimulation()
             }
         }
     }
+}
+
+void SimCanvas::updateSimulation()
+{
+    const std::vector<Direction> directions = {
+        {0, -1}, {0, 1}, {-1, 0}, {1, 0},   // sides
+        {-1, -1}, {1, -1}, {-1, 1}, {1, 1}  // corners
+    };
+
+    for (int y = 0; y < h; y++)
+    {
+        for (int x = 0; x < w; x++)
+        {
+            float sum = 0.0f;
+            for (const auto& dir : directions)
+            {
+                int neigbor_x = (x + dir.dx + w) % w;
+                int neigbor_y = (y + dir.dy + h) % h;
+                sum += curr_grid[neigbor_y][neigbor_x];
+            }
+
+            float sim_speed_factor = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
+
+            float new_val = ((1.0f - sim_speed_factor) * curr_grid[y][x]) + (sim_speed_factor * sum/8.0f);
+            next_grid[y][x] = new_val;
+        }
+    }
+
+    curr_grid = next_grid;
 }
 
 void SimCanvas::generateCircle(std::vector<std::vector<float>> &grid, int cX, int cY, int radius)
