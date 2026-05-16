@@ -16,8 +16,6 @@ class TuringPatternGenerator : public QWidget
     public:
         explicit TuringPatternGenerator(QWidget *parent=nullptr);
 
-    // protected:
-
     private:
         QTimer *timer;
         QImage image;

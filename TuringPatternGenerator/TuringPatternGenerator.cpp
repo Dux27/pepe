@@ -1,4 +1,5 @@
 #include "TuringPatternGenerator.hpp"
+#include "config.hpp"
 #include <iostream>
 
 
@@ -11,8 +12,8 @@ TuringPatternGenerator::TuringPatternGenerator(QWidget *parent)
     main_layout = new QHBoxLayout(this);
     sim_canvas = new SimCanvas(this);
     ui_panel = new UIPanel(this);
-    main_layout->addWidget(sim_canvas, 4);
-    main_layout->addWidget(ui_panel, 1);
+    main_layout->addWidget(sim_canvas, (10 * Config::sim_window_ratio));
+    main_layout->addWidget(ui_panel, 10 - (10 * Config::sim_window_ratio));
     this->setLayout(main_layout);
 
     timer = new QTimer(this);

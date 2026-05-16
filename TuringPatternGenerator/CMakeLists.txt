@@ -10,6 +10,7 @@ find_package(Qt6 REQUIRED COMPONENTS Widgets) # Find the Qt6 Widgets module
 
 add_executable(TuringPatternGenerator
     main.cpp
+    config.hpp
     TuringPatternGenerator.cpp
     TuringPatternGenerator.hpp
     SimCanvas.cpp
