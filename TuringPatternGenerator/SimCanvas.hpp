@@ -21,7 +21,7 @@ class SimCanvas : public QWidget
         QImage image;
 
         int background_rgb = qRgb(40, 40, 40);
-        int activator_cell_rgb = qRgb(0, 255, 255);
+        int activator_cell_rgb = qRgb(0, 255, 255); // Cyan
         int inhibitor_cell_rgb = qRgb(120, 0, 0);
 
         int h = Config::window_height;
@@ -29,4 +29,5 @@ class SimCanvas : public QWidget
         std::vector<std::vector<float>> curr_grid;
 
         void renderSimulation();
+        void generateCircle(std::vector<std::vector<float>> &grid, int x, int y, int size);
 };

@@ -8,7 +8,7 @@ SimCanvas::SimCanvas(QWidget *parent)
     image.fill(background_rgb);
 
     curr_grid.assign(h, std::vector<float>(w, 0.0f));
-    curr_grid[h / 2][w / 2] = 1.0f;
+    generateCircle(curr_grid, w / 2, h / 2, 20);
 }
 
 void SimCanvas::renderSimulation()
@@ -36,6 +36,25 @@ void SimCanvas::renderSimulation()
             {
                 int alpha = static_cast<int>(curr_grid[y][x] * 255.0f);
                 pixel_data[row_offset + x] = (alpha << 24) | (activator_cell_rgb & 0x00FFFFFF);
+            }
+        }
+    }
+}
+
+void SimCanvas::generateCircle(std::vector<std::vector<float>> &grid, int cX, int cY, int radius)
+{
+    int rSqr = radius * radius;
+
+    for (int y = 0; y < w; y++)
+    {
+        for (int x = 0; x < h; x++)
+        {
+            int dx = x - cX;
+            int dy = y - cY;
+
+            if ((dx * dx) + (dy * dy) <= rSqr)
+            {
+                grid[y][x] = 1.0f;
             }
         }
     }
