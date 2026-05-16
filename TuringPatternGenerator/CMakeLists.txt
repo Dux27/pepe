@@ -12,6 +12,10 @@ add_executable(TuringPatternGenerator
     main.cpp
     TuringPatternGenerator.cpp
     TuringPatternGenerator.hpp
+    SimCanvas.cpp
+    SimCanvas.hpp
+    UIPanel.cpp
+    UIPanel.hpp
 )
 
 target_link_libraries(TuringPatternGenerator PRIVATE Qt6::Widgets) # Link the Qt6 Widgets library to the executable

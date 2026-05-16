@@ -7,34 +7,22 @@ TuringPatternGenerator::TuringPatternGenerator(QWidget *parent)
     setWindowTitle("Turing Pattern Generator");
     setFocusPolicy(Qt::StrongFocus);
 
+    main_layout = new QHBoxLayout(this);
+    sim_canvas = new SimCanvas(this);
+    ui_panel = new UIPanel(this);
+    main_layout->addWidget(sim_canvas, 4);
+    main_layout->addWidget(ui_panel, 1);
+    this->setLayout(main_layout);
+
     timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, [this]() -> void {
         if (running)
         {
-            renderSimulation();
+            sim_canvas->renderSimulation();
             update();
         }
         else
             timer->stop();
     });
     timer->start(frame_dur_ms);
-}
-
-void TuringPatternGenerator::renderSimulation()
-{
-    if (image.isNull())
-    {
-        image = QImage(sim_width, sim_height, QImage::Format_RGB32);
-        image.fill(background_rgb);
-        return;
-    }
-
-    image = QImage(width() * 0.8, height(), QImage::Format_RGB32);
-    image.fill(background_rgb);
-}
-
-void TuringPatternGenerator::paintEvent(QPaintEvent *event)
-{
-    QPainter painter(this);
-    painter.drawImage(0, 0, image);
 }
