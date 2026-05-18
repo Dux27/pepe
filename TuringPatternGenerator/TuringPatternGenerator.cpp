@@ -22,12 +22,12 @@ TuringPatternGenerator::TuringPatternGenerator(QWidget *parent)
     connect(timer, &QTimer::timeout, this, [this]() -> void {
         if (running)
         {
-            sim_canvas->renderSimulation();
             sim_canvas->updateSimulation();
-            update();
+            sim_canvas->renderSimulation();
+            sim_canvas->update();
         }
     });
-    timer->start(frame_dur_ms);
+    timer->start(Config::frame_dur_ms);
 
     connect(ui_panel, &UIPanel::run_simulation_toggled, this, [this](bool is_running){ 
         this->running = is_running; 

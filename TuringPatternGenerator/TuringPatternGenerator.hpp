@@ -25,5 +25,4 @@ class TuringPatternGenerator : public QWidget
         UIPanel *ui_panel;
 
         bool running;
-        int frame_dur_ms = 100;
 };

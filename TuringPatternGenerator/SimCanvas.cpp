@@ -1,6 +1,7 @@
 #include "SimCanvas.hpp"
 #include <cstdlib>
 #include <ctime>
+#include <random>
 
 
 SimCanvas::SimCanvas(QWidget *parent)
@@ -9,12 +10,9 @@ SimCanvas::SimCanvas(QWidget *parent)
     image = QImage(w, h, QImage::Format_ARGB32);
     image.fill(background_rgb);
 
-    curr_grid.assign(h, std::vector<float>(w, 0.0f));
-    next_grid.assign(h, std::vector<float>(w, 0.0f));
-
-    srand(static_cast<unsigned int>(time(nullptr)));
-
-    generateCircle(curr_grid, w / 2, h / 2, 100);
+    std::srand(static_cast<unsigned>(std::time(nullptr)));
+    generateCircle(curr_grid_ptr, w / 2, h / 2, 200, true);
+    generateCircle(curr_grid_ptr, w / 2 + 300, h / 2 + 300, 200, true);
 }
 
 void SimCanvas::renderSimulation()
@@ -24,8 +22,6 @@ void SimCanvas::renderSimulation()
         // Wait for image to allocate memory.
         return;
     }
-
-    image.fill(background_rgb);
 
     // Get the raw pointer to the first memory cell of the image data.
     // Interpret the pointer as 33-bit in type (QRgb*) rather than a 1-byte type (uchar*)
@@ -38,9 +34,9 @@ void SimCanvas::renderSimulation()
         
         for (int x = 0; x < w; x++)
         {
-            if(curr_grid[y][x] > 0.0f)
+            if((*curr_grid_ptr)[y][x] > 0.0f)
             {
-                int alpha = static_cast<int>(curr_grid[y][x] * 255.0f);
+                int alpha = static_cast<int>((*curr_grid_ptr)[y][x] * 255.0f);
                 pixel_data[row_offset + x] = (alpha << 24) | (activator_cell_rgb & 0x00FFFFFF);
             }
         }
@@ -63,33 +59,35 @@ void SimCanvas::updateSimulation()
             {
                 int neigbor_x = (x + dir.dx + w) % w;
                 int neigbor_y = (y + dir.dy + h) % h;
-                sum += curr_grid[neigbor_y][neigbor_x];
+                sum += (*curr_grid_ptr)[neigbor_y][neigbor_x];
             }
 
-            float sim_speed_factor = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
-
-            float new_val = ((1.0f - sim_speed_factor) * curr_grid[y][x]) + (sim_speed_factor * sum/8.0f);
-            next_grid[y][x] = new_val;
+            float sim_factor = 0.5f;
+            float new_val = ((1.0f - sim_factor) * (*curr_grid_ptr)[y][x]) + (sim_factor * sum/8.0f);
+            (*next_grid_ptr)[y][x] = new_val;
         }
     }
 
     curr_grid = next_grid;
 }
 
-void SimCanvas::generateCircle(std::vector<std::vector<float>> &grid, int cX, int cY, int radius)
+void SimCanvas::generateCircle(std::array<std::array<float, w>, h> *grid, int cX, int cY, int radius, bool is_random)
 {
     int rSqr = radius * radius;
 
-    for (int y = 0; y < w; y++)
+    for (int y = 0; y < h; y++)
     {
-        for (int x = 0; x < h; x++)
+        for (int x = 0; x < w; x++)
         {
             int dx = x - cX;
             int dy = y - cY;
 
             if ((dx * dx) + (dy * dy) <= rSqr)
             {
-                grid[y][x] = 1.0f;
+                if (is_random)
+                    (*grid)[y][x] = static_cast<float>(rand()) / RAND_MAX;
+                else
+                    (*grid)[y][x] = 1.0f;
             }
         }
     }
